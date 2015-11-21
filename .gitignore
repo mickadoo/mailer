@@ -3,3 +3,5 @@
 app/config/config.yml
 vendor
 app/logs/*
+app/resources/twig/templates/
+app/resources/translations/

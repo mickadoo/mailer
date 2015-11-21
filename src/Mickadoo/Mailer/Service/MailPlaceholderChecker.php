@@ -30,7 +30,7 @@ class MailPlaceholderChecker
      */
     public function getRequiredKeys($twigTemplateName)
     {
-        $requiredKeys = ['%' . MailContentGenerator::FRONTEND_URL_KEY . '%'];
+        $requiredKeys = [];
 
         $body = $this->twig->render($twigTemplateName, ['data' => []]);
         preg_match_all('/%[\w|\d|\.]*%/', $body, $missingKeys);

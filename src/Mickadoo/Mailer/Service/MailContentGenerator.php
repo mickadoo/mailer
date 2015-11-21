@@ -9,7 +9,6 @@ use Twig_Environment as Twig;
 class MailContentGenerator
 {
     const TWIG_FILE_SUFFIX = '.html.twig';
-    const FRONTEND_URL_KEY = 'frontendUrl';
 
     /**
      * @var Twig
