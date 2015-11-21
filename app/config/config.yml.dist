@@ -1,0 +1,15 @@
+smtp:
+    host: <host>
+    port: <port>
+    username: <username>
+    password: <password>
+    security: <security (ssl)>
+mail:
+    from: <email>
+    from_name: <name>
+    support_mail: <email>
+twig:
+    autoescape: false
+    template_directory: /app/resources/twig/templates
+translator:
+    fallback_locale: en
