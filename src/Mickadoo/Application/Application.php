@@ -103,8 +103,14 @@ class Application extends BaseApplication
 
         $this->register(new TwigServiceProvider(), array(
             'twig.path' => $twigTemplatePath,
-            'twig.options' => $this['config']['twig']
+            'twig.options' => $this['config']['twig'],
         ));
+
+        if ($this['config']['twig']['debug']) {
+            /** @var \Twig_Environment $twig */
+            $twig = $this['twig'];
+            $twig->addExtension(new \Twig_Extension_Debug());
+        }
     }
 
     private function registerTranslator()

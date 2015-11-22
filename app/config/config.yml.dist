@@ -11,5 +11,6 @@ mail:
 twig:
     autoescape: false
     template_directory: /app/resources/twig/templates
+    debug: false
 translator:
     fallback_locale: en
