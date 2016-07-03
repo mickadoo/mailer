@@ -9,7 +9,8 @@
         "symfony/config": "^2.7",
         "symfony/yaml": "^2.7",
         "deralex/yaml-config-service-provider": "^1.0",
-        "videlalvaro/php-amqplib": "^2.5.0"
+        "php-amqplib/php-amqplib": "^2.6.0",
+        "doctrine/dbal": "~2.2"
     },
     "autoload": {
         "psr-0": {

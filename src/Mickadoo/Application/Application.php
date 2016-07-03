@@ -3,6 +3,7 @@
 namespace Mickadoo\Application;
 
 use DerAlex\Silex\YamlConfigServiceProvider;
+use Doctrine\DBAL\Connection;
 use Mickadoo\Mailer\Exception\MailerException;
 use Mickadoo\Mailer\Service\ArrayHelper;
 use Mickadoo\Mailer\Service\MailContentGenerator;
@@ -11,6 +12,7 @@ use Mickadoo\Mailer\SwiftMailer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application as BaseApplication;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
@@ -31,6 +33,7 @@ class Application extends BaseApplication
         $this->registerCustomServices();
         $this->enableJsonContentParsing();
         $this->registerErrorHandler();
+        $this->registerDatabaseConnection();
     }
 
     private function registerErrorHandler()
@@ -85,7 +88,7 @@ class Application extends BaseApplication
             'monolog.bubble' => false,
         ));
 
-        $this['mail.logger'] = $this->share(function ($this) use ($mailLogPath, $errorLogPath) {
+        $this['mail.logger'] = $this->share(function () use ($mailLogPath, $errorLogPath) {
             /** @var Logger $log */
             $log = new $this['monolog.logger.class']('mailer');
             $successHandler = new StreamHandler($mailLogPath, Logger::INFO, false);
@@ -150,7 +153,7 @@ class Application extends BaseApplication
             return new MailPlaceholderChecker($this['twig'], $twigTemplatePath);
         };
 
-        $this['mail.content_generator'] = function ($this) {
+        $this['mail.content_generator'] = function () {
             return new MailContentGenerator(
                 $this['twig'],
                 $this['mail.placeholder_checker'],
@@ -160,7 +163,7 @@ class Application extends BaseApplication
             );
         };
 
-        $this['mail.swift_mailer'] = function ($this) {
+        $this['mail.swift_mailer'] = function () {
             return new SwiftMailer(
                 $this['mailer'],
                 $this['config']['mail'],
@@ -203,5 +206,23 @@ class Application extends BaseApplication
     public function getMailer()
     {
         return $this['mail.swift_mailer'];
+    }
+
+    private function registerDatabaseConnection()
+    {
+        $this->register(new DoctrineServiceProvider(), [
+            'db.options' => [
+                'driver'   => 'pdo_sqlite',
+                'path'     => $this['root_directory'].'/var/db/mailer.db',
+            ],
+        ]);
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getDb()
+    {
+        return $this['db'];
     }
 }
