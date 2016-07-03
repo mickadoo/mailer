@@ -1,19 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 use Symfony\Component\Debug;
-use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Request;
-use Mickadoo\Application\Application;
 use Symfony\Component\HttpFoundation\Response;
-use Mickadoo\Mailer\Exception\MailerException;
-
-ErrorHandler::register();
-
-$app = new Application();
-$app['root_directory'] = realpath(__DIR__ . '/../');
-$app->setUp();
 
 $app->post('/mail', function (Request $request) use ($app) {
 
@@ -33,19 +24,3 @@ $app->post('/mail', function (Request $request) use ($app) {
 });
 
 $app->run();
-
-/**
- * @param $recipient
- * @param $type
- * @throws MailerException
- */
-function checkRequirements($recipient, $type)
-{
-    if (!isset($recipient)) {
-        throw new MailerException("At least you gotta say who you wanna send it to (recipient)");
-    }
-
-    if (!isset($type)) {
-        throw new MailerException("You need to say what kind of mail to send (type)");
-    }
-}
