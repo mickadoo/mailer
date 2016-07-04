@@ -9,7 +9,7 @@ use Mickadoo\Mailer\Exception\MailerException;
 use Mickadoo\Mailer\Service\ArrayHelper;
 use Mickadoo\Mailer\Service\MailContentGenerator;
 use Mickadoo\Mailer\Service\MailPlaceholderChecker;
-use Mickadoo\Mailer\Service\UserFinder;
+use Mickadoo\Mailer\Service\UserService;
 use Mickadoo\Mailer\SwiftMailer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -178,7 +178,7 @@ class Application extends BaseApplication
         };
 
         $this['user.finder'] = function() {
-            return new UserFinder($this->getDb());
+            return new UserService($this->getDb());
         };
     }
 
@@ -245,7 +245,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * @return UserFinder
+     * @return UserService
      */
     public function getUserFinder()
     {

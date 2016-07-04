@@ -4,24 +4,24 @@ namespace Mickadoo\Application\Handler;
 
 use Mickadoo\Mailer\MailerInterface;
 use Mickadoo\Mailer\Service\MailContentGenerator;
-use Mickadoo\Mailer\Service\UserFinder;
+use Mickadoo\Mailer\Service\UserService;
 
 class UuidOnlyMailHandler extends AbstractMailHandler
 {
     /**
-     * @var UserFinder
+     * @var UserService
      */
     protected $finder;
 
     /**
      * @param MailContentGenerator $contentGenerator
      * @param MailerInterface      $mailer
-     * @param UserFinder           $finder
+     * @param UserService          $finder
      */
     public function __construct(
         MailContentGenerator $contentGenerator,
         MailerInterface $mailer,
-        UserFinder $finder
+        UserService $finder
     ) {
         $this->finder = $finder;
         parent::__construct($contentGenerator, $mailer);

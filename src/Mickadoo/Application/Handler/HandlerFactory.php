@@ -27,6 +27,10 @@ class HandlerFactory
             $application->getMailer(),
             $application->getUserFinder()
         );
+
+        $this->handlers[] = new EmailChangedEventHandler(
+            $application->getUserFinder()
+        );
     }
 
     /**
