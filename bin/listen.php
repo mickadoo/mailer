@@ -29,6 +29,7 @@ echo ' [*] Waiting for messages. To exit press CTRL+C', "\n";
 $routingCallback = function ($message) use ($app) {
     $body = json_decode($message->body, true);
     $handler = $app->getHandlerFactory()->getHandlerForMessage($body);
+    echo 'using ' . get_class($handler) . ' for message' . PHP_EOL;
     $handler->handle($body);
 };
 

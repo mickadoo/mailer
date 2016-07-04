@@ -32,10 +32,10 @@ class UuidOnlyMailHandler extends AbstractMailHandler
      */
     public function handle(array $message)
     {
-        $user = $this->finder->findByUuid($message['user']['_id']);
+        $user = $this->finder->findByUuid($this->getUuid($message));
 
         if (!$user) {
-            echo 'no user found with that id';
+            echo 'no user found with id ' . $this->getUuid($message);
             return;
         }
 
@@ -54,6 +54,24 @@ class UuidOnlyMailHandler extends AbstractMailHandler
      */
     public function canHandle(array $message) : bool
     {
-        return isset($message['user']['_id']);
+        return null !== $this->getUuid($message);
+    }
+
+    /**
+     * @param $message
+     *
+     * @return null|string
+     */
+    private function getUuid($message)
+    {
+        if (isset($message['user']['_id'])) {
+            return $message['user']['_id'];
+        }
+
+        if (isset($message['data']['user']['uuid'])) {
+            return $message['data']['user']['uuid'];
+        }
+
+        return null;
     }
 }

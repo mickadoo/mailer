@@ -4,6 +4,7 @@ namespace Mickadoo\Application\Handler;
 
 use Mickadoo\Application\Application;
 use Mickadoo\Mailer\Exception\MailerException;
+use Psr\Log\LoggerInterface;
 
 class HandlerFactory
 {
@@ -11,6 +12,11 @@ class HandlerFactory
      * @var HandlerInterface[]
      */
     protected $handlers;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @param Application $application
@@ -21,6 +27,8 @@ class HandlerFactory
             $application->getMailContentGenerator(),
             $application->getMailer()
         );
+
+        $this->logger = $application['logger'];
 
         $this->handlers[] = new UuidOnlyMailHandler(
             $application->getMailContentGenerator(),
@@ -48,6 +56,9 @@ class HandlerFactory
         }
 
         // todo should this be logging only?
-        throw new MailerException("No handlers registered for that");
+        echo 'failed to handle message';
+        $this->logger->error("Could not handle: " . print_r($message, true));
+
+        return new BlackHoleHandler();
     }
 }
