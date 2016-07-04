@@ -4,6 +4,7 @@ namespace Mickadoo\Application;
 
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Doctrine\DBAL\Connection;
+use Mickadoo\Application\Handler\HandlerFactory;
 use Mickadoo\Mailer\Exception\MailerException;
 use Mickadoo\Mailer\Service\ArrayHelper;
 use Mickadoo\Mailer\Service\MailContentGenerator;
@@ -34,6 +35,7 @@ class Application extends BaseApplication
         $this->enableJsonContentParsing();
         $this->registerErrorHandler();
         $this->registerDatabaseConnection();
+        $this->registerMessageHandler();
     }
 
     private function registerErrorHandler()
@@ -224,5 +226,18 @@ class Application extends BaseApplication
     public function getDb()
     {
         return $this['db'];
+    }
+
+    private function registerMessageHandler()
+    {
+        $this['handler.factory'] = new HandlerFactory($this);
+    }
+
+    /**
+     * @return HandlerFactory
+     */
+    public function getHandlerFactory()
+    {
+        return $this['handler.factory'];
     }
 }
