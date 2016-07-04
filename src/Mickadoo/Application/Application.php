@@ -9,6 +9,7 @@ use Mickadoo\Mailer\Exception\MailerException;
 use Mickadoo\Mailer\Service\ArrayHelper;
 use Mickadoo\Mailer\Service\MailContentGenerator;
 use Mickadoo\Mailer\Service\MailPlaceholderChecker;
+use Mickadoo\Mailer\Service\UserFinder;
 use Mickadoo\Mailer\SwiftMailer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -35,7 +36,6 @@ class Application extends BaseApplication
         $this->enableJsonContentParsing();
         $this->registerErrorHandler();
         $this->registerDatabaseConnection();
-        $this->registerMessageHandler();
     }
 
     private function registerErrorHandler()
@@ -172,6 +172,14 @@ class Application extends BaseApplication
                 $this['mail.logger']
             );
         };
+
+        $this['handler.factory'] = function () {
+            return new HandlerFactory($this);
+        };
+
+        $this['user.finder'] = function() {
+            return new UserFinder($this->getDb());
+        };
     }
 
     private function registerConfig()
@@ -228,16 +236,19 @@ class Application extends BaseApplication
         return $this['db'];
     }
 
-    private function registerMessageHandler()
-    {
-        $this['handler.factory'] = new HandlerFactory($this);
-    }
-
     /**
      * @return HandlerFactory
      */
     public function getHandlerFactory()
     {
         return $this['handler.factory'];
+    }
+
+    /**
+     * @return UserFinder
+     */
+    public function getUserFinder()
+    {
+        return $this['user.finder'];
     }
 }

@@ -21,6 +21,12 @@ class HandlerFactory
             $application->getMailContentGenerator(),
             $application->getMailer()
         );
+
+        $this->handlers[] = new UuidOnlyMailHandler(
+            $application->getMailContentGenerator(),
+            $application->getMailer(),
+            $application->getUserFinder()
+        );
     }
 
     /**
@@ -37,6 +43,7 @@ class HandlerFactory
             }
         }
 
+        // todo should this be logging only?
         throw new MailerException("No handlers registered for that");
     }
 }
