@@ -30,16 +30,13 @@ class MailPlaceholderChecker
      */
     public function getRequiredKeys($twigTemplateName)
     {
-        $requiredKeys = [];
+        $source = $this->twig->getLoader()->getSource($twigTemplateName);
+        $tokens = $this->twig->tokenize($source);
+        $parsed = $this->twig->getParser()->parse($tokens);
+        $collected = [];
+        $this->collectNodes($parsed, $collected);
 
-        $body = $this->twig->render($twigTemplateName, ['data' => []]);
-        preg_match_all('/%[\w|\d|\.]*%/', $body, $missingKeys);
-
-        if (isset($missingKeys[0])) {
-            return array_merge($requiredKeys, $missingKeys[0]);
-        }
-
-        return $requiredKeys;
+        return array_keys($collected);
     }
 
     /**
@@ -53,4 +50,22 @@ class MailPlaceholderChecker
             array_diff($this->getRequiredKeys($twigTemplateName), array_keys($translationData))
         );
     }
+
+    /**
+     * @param \Twig_Node $nodes
+     * @param array $collected
+     */
+    private function collectNodes($nodes, array &$collected)
+    {
+        foreach ($nodes as $node) {
+            $childNodes = $node->getIterator()->getArrayCopy();
+            if (!empty($childNodes)) {
+                $this->collectNodes($childNodes, $collected);
+            } elseif ($node instanceof \Twig_Node_Expression_Name) {
+                $name = $node->getAttribute('name');
+                $collected[$name] = $node; // ensure unique values
+            }
+        }
+    }
+
 }
