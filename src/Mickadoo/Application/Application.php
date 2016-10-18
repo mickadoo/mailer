@@ -2,9 +2,9 @@
 
 namespace Mickadoo\Application;
 
-use DerAlex\Silex\YamlConfigServiceProvider;
 use Doctrine\DBAL\Connection;
 use Mickadoo\Application\Handler\HandlerFactory;
+use Mickadoo\Application\ServiceProvider\EnvOverrideYamlConfigServiceProvider;
 use Mickadoo\Mailer\Exception\MailerException;
 use Mickadoo\Mailer\Service\ArrayHelper;
 use Mickadoo\Mailer\Service\MailContentGenerator;
@@ -184,7 +184,7 @@ class Application extends BaseApplication
 
     private function registerConfig()
     {
-        $this->register(new YamlConfigServiceProvider($this['root_directory'] . '/app/config/config.yml'));
+        $this->register(new EnvOverrideYamlConfigServiceProvider($this['root_directory'] . '/app/config/config.yml'));
     }
 
     private function enableJsonContentParsing()

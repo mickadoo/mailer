@@ -1,13 +1,13 @@
 smtp:
-    host: <host>
-    port: <port>
+    host: smtp.gmail.com
+    port: 465
     username: <username>
     password: <password>
-    security: <security (ssl)>
+    security: ssl
 mail:
-    from: <email>
-    from_name: <name>
-    support_mail: <email>
+    from: michaeldevery@gmail.com
+    from_name: Yaryyard
+    support_mail: michaeldevery@gmail.com
 twig:
     autoescape: false
     template_directory: /app/resources/twig/templates
