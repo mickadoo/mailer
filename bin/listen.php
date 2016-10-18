@@ -4,16 +4,11 @@ require_once __DIR__.'/../bootstrap.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-$host = 'rabbit';
-$port = 5672;
-$username = 'guest';
-$password = 'guest';
-$queueName = 'yarnyard';
-
-function getValueOrNull(array $array, $key)
-{
-    return $array[$key] ?? null;
-}
+$host = getenv("RABBITMQ_HOST") ?? 'localhost';
+$port = getenv("RABBITMQ_PORT") ?? 5672;
+$username = getenv("RABBITMQ_USER") ?? 'guest';
+$password = getenv("RABBITMQ_PASS") ?? 'guest';
+$queueName = getenv("RABBITMQ_QUEUE") ?? 'yarnyard';
 
 try {
     $connection = new AMQPStreamConnection($host, $port, $username, $password);
