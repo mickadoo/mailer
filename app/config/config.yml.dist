@@ -12,5 +12,6 @@ twig:
     autoescape: false
     template_directory: /app/resources/twig/templates
     debug: false
+    strict_variables: true
 translator:
     fallback_locale: en
