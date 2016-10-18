@@ -1,0 +1,6 @@
+<h4>{{ 'EMAIL_CONFIRMATION.API_TOKEN_TEXT' | trans() }} {{ token }}</h4>
+<h4>
+    <a href="{{ auth_host }}?token={{ token }}&email={{ email }}">
+        {{ 'EMAIL_CONFIRMATION.MAIL_LINK_TEXT' | trans() }}
+    </a>
+</h4>

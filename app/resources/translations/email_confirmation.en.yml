@@ -1,0 +1,4 @@
+EMAIL_CONFIRMATION:
+  SUBJECT: 'plz confirm e-mail'
+  API_TOKEN_TEXT: 'You can use this token for confirmation via api:'
+  MAIL_LINK_TEXT: 'click here to confirm your email'
