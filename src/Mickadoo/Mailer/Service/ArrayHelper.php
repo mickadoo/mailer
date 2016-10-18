@@ -6,15 +6,6 @@ class ArrayHelper
 {
     /**
      * @param array $array
-     * @return array
-     */
-    public function flattenAndDecorate(array $array)
-    {
-        return $this->decorateKeys($this->flatten($array));
-    }
-
-    /**
-     * @param array $array
      * @param string $prefix
      * @return array
      */

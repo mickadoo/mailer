@@ -69,7 +69,7 @@ class MailContentGenerator
         $this->validateRequiredData($templateType, $translationData);
         $this->translator->setLocale($locale);
 
-        return $this->twig->render($templateType . self::TWIG_FILE_SUFFIX, ['data' => $translationData]);
+        return $this->twig->render($templateType . self::TWIG_FILE_SUFFIX, $translationData);
     }
 
     /**
@@ -102,8 +102,9 @@ class MailContentGenerator
     private function prepareData(array $data)
     {
         $data = $this->addDefaultData($data);
+        $flattened = $this->arrayHelper->flatten($data);
 
-        return $this->arrayHelper->flattenAndDecorate($data);
+        return $flattened;
     }
 
     /**
